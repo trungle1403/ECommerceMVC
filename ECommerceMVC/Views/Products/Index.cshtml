@@ -1,4 +1,4 @@
-﻿@model PaginatedList<ECommerceMVC.Models.ProductsModel>
+﻿@model PaginatedList<ECommerceMVC.Data.Product>
 @{
     ViewData["Title"] = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -45,10 +45,10 @@
                 </div>
                 @foreach (var item in Model.List)
                 {
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
                         <div class="product-item bg-light mb-4">
                             <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="~/img/@item.ImageUrl" alt="">
+                                <img class="img-fluid w-100" src="@item.Images" alt="">
                                 <div class="product-action">
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
@@ -57,7 +57,7 @@
                             <div class="text-center py-4">
                                 <a class="h6 text-decoration-none text-truncate" href="">@item.ProductName</a>
                                 <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5>@item.Price</h5><h6 class="text-muted ml-2"><del>@item.Price</del></h6>
+                                    <h5>@item.Price.ToString("N0")</h5><h6 class="text-muted ml-2"><del>@item.Price.ToString("N0")</del></h6>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-center mb-1">
                                     <small class="fa fa-star text-primary mr-1"></small>

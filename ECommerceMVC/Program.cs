@@ -1,4 +1,6 @@
 using ECommerceMVC.Data;
+using ECommerceMVC.Repositories;
+using ECommerceMVC.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,13 @@ builder.Services.AddDbContext<EcommerceMvcContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("ECommerceMVC"));
 });
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+//builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); 
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

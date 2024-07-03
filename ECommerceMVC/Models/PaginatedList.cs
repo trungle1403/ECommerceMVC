@@ -7,7 +7,7 @@ namespace ECommerceMVC.Models
         public List<T> List { get; set; }
         public int PageIndex { get; set; }  
         public int TotalPages { get; set; }
-        public static int PageSize { get; set; } = 10;
+        public static int PageSize { get; set; } = 5;
 
 
 
@@ -17,10 +17,10 @@ namespace ECommerceMVC.Models
             TotalPages = (int) Math.Ceiling(count / (double) PageSize);
         }
 
-        public static async Task<PaginatedList<T>> CreatePagination(IQueryable<T> soucre, int pageIndex)
+        public static async Task<PaginatedList<T>> CreatePagination(IEnumerable<T> soucre, int pageIndex)
         {
-            var count = await soucre.CountAsync();
-            var resultList = await soucre.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToListAsync();
+            var count = soucre.Count();
+            var resultList = soucre.Skip((pageIndex - 1) * PageSize).Take(PageSize).ToList();
             return new PaginatedList<T>(resultList, count, pageIndex);
         }
     }
