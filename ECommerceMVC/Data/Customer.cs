@@ -9,6 +9,10 @@ public partial class Customer
 
     public string? CustomerName { get; set; }
 
+    public bool? Sex { get; set; }
+
+    public DateTime? DateOfBirth { get; set; }
+
     public string? Username { get; set; }
 
     public string? Password { get; set; }
@@ -21,7 +25,9 @@ public partial class Customer
 
     public bool? IsActive { get; set; }
 
-    public DateTime? DateCreated { get; set; }
+    public DateTime? CreatedDate { get; set; }
+
+    public string? RandonKey { get; set; }
 
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 

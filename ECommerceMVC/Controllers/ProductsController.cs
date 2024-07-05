@@ -3,6 +3,7 @@ using ECommerceMVC.Models;
 using ECommerceMVC.Repositories;
 using ECommerceMVC.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 
 namespace ECommerceMVC.Controllers
 {
@@ -42,6 +43,14 @@ namespace ECommerceMVC.Controllers
                 pageIndex = 1;
             }
            return View(await PaginatedList<Product>.CreatePagination(data, pageIndex));
+        }
+
+
+        [HttpGet]
+        public JsonResult GetAllProducts()
+        {
+            var data = _productRepository.GetAll();
+            return Json(data);
         }
     }
 }

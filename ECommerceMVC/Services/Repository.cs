@@ -19,8 +19,9 @@ namespace ECommerceMVC.Services
             return entity;
         }
 
-        public void Delete(T entity)
+        public void Delete(string id)
         {
+            var entity = _context.Set<T>().Find(id);
             _context.Set<T>().Remove(entity);
         }
 

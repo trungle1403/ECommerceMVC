@@ -90,3 +90,11 @@
     </div>
 </div>
 <!-- Shop End -->
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var result = getAjax("/Products/GetAllProducts");
+        })    
+    </script>
+}

@@ -6,6 +6,6 @@
         T GetByID(string id);
         T Create(T entity); 
         void Update(T entity);
-        void Delete(T entity);
+        void Delete(string id);
     }
 }
