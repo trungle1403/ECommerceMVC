@@ -40,7 +40,7 @@ namespace ECommerceMVC.Areas.Admin.Controllers
                 c.Icon,
                 MenuParent = c.MenuIdParent.HasValue ? _context.Menus.Where(p => p.MenuId == c.MenuIdParent).Select(p => p.MenuName).FirstOrDefault() : null,
             });
-            return Json(new ApiReponse { Message = MessageNoti.FETCH_SUCCESSFUL, Data = data, Type = true});
+            return Json(new ApiResponse { Message = MessageNoti.FETCH_SUCCESSFUL, Data = data, Type = true});
         }
 
         [HttpGet]
@@ -59,13 +59,13 @@ namespace ECommerceMVC.Areas.Admin.Controllers
                 {
                     var data = _repository.Create(menu);
                     _unitOfWork.Commit();
-                    return Json(new ApiReponse { Message = MessageNoti.ADD_SUCCESSFUL, Data = data, Type = true });
+                    return Json(new ApiResponse { Message = MessageNoti.ADD_SUCCESSFUL, Data = data, Type = true });
                 }
                 else
                 {
                     _repository.Update(menu);
                     _unitOfWork.Commit();
-                    return Json(new ApiReponse { Message = MessageNoti.UPDATE_SUCCESSFUL, Data = menu, Type = true });
+                    return Json(new ApiResponse { Message = MessageNoti.UPDATE_SUCCESSFUL, Data = menu, Type = true });
                 }
                
             //}
@@ -80,11 +80,11 @@ namespace ECommerceMVC.Areas.Admin.Controllers
             if (id != null)
             {
                 _repository.Delete(id);
-                return Json(new ApiReponse { Message = MessageNoti.DELETE_SUCCESSFUL, Data = null, Type = true });
+                return Json(new ApiResponse { Message = MessageNoti.DELETE_SUCCESSFUL, Data = null, Type = true });
             }
             else
             {
-                return Json(new ApiReponse { Message = MessageNoti.ERROR, Data = null, Type = false });
+                return Json(new ApiResponse { Message = MessageNoti.ERROR, Data = null, Type = false });
             }
         }
 
