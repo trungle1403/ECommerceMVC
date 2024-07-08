@@ -50,7 +50,7 @@
                             <div class="product-img position-relative overflow-hidden">
                                 <img class="img-fluid w-100" src="@item.Images" alt="">
                                 <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                    <a class="btn btn-outline-dark btn-square btnAddToCart" data-id="@item.ProductId" href="#"><i class="fa fa-shopping-cart"></i></a>
                                     <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                 </div>
                             </div>
@@ -90,3 +90,19 @@
     </div>
 </div>
 <!-- Shop End -->
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var result = getAjax("/Products/GetAllProducts");
+
+            $('.btnAddToCart').on('click', function () {
+                var id = $(this).attr('data-id');
+                var result = getAjax("Products/AddToCart", { id: id, quantity: 1})
+                if (result.type) {
+                    console.log(result.message)
+                }
+            })
+        })    
+    </script>
+}

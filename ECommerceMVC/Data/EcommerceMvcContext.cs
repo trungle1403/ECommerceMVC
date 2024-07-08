@@ -21,11 +21,15 @@ public partial class EcommerceMvcContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Menu> Menus { get; set; }
+
     public virtual DbSet<Order> Orders { get; set; }
 
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
 
@@ -78,15 +82,32 @@ public partial class EcommerceMvcContext : DbContext
             entity.Property(e => e.CustomerId)
                 .HasDefaultValueSql("(newid())")
                 .HasColumnName("CustomerID");
-            entity.Property(e => e.CustomerName).HasMaxLength(50);
-            entity.Property(e => e.DateCreated)
+            entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.CustomerName).HasMaxLength(50);
+            entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.Password).HasMaxLength(100);
             entity.Property(e => e.PhoneNumber).HasMaxLength(20);
+            entity.Property(e => e.RandonKey).HasMaxLength(500);
+            entity.Property(e => e.Sex).HasDefaultValue(true);
             entity.Property(e => e.Username).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Menu>(entity =>
+        {
+            entity.ToTable("Menu");
+
+            entity.Property(e => e.MenuId)
+                .HasDefaultValueSql("(newid())")
+                .HasColumnName("MenuID");
+            entity.Property(e => e.Icon).HasMaxLength(50);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.MenuIdParent).HasColumnName("MenuID_Parent");
+            entity.Property(e => e.MenuName).HasMaxLength(250);
+            entity.Property(e => e.Url).HasMaxLength(250);
         });
 
         modelBuilder.Entity<Order>(entity =>
@@ -157,6 +178,16 @@ public partial class EcommerceMvcContext : DbContext
             entity.HasOne(d => d.Supplier).WithMany(p => p.Products)
                 .HasForeignKey(d => d.SupplierId)
                 .HasConstraintName("FK_Supplier_Product");
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Role");
+
+            entity.Property(e => e.RoleId).HasColumnName("RoleID");
+            entity.Property(e => e.RoleName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<Status>(entity =>

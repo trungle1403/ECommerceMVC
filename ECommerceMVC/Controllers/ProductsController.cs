@@ -3,6 +3,7 @@ using ECommerceMVC.Models;
 using ECommerceMVC.Repositories;
 using ECommerceMVC.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
 
 namespace ECommerceMVC.Controllers
 {
@@ -42,6 +43,52 @@ namespace ECommerceMVC.Controllers
                 pageIndex = 1;
             }
            return View(await PaginatedList<Product>.CreatePagination(data, pageIndex));
+        }
+
+
+        [HttpGet]
+        public JsonResult GetAllProducts()
+        {
+            var data = _productRepository.GetAll();
+            return Json(data);
+        }
+
+        public JsonResult AddToCart(string id, int quantity = 1)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(id))
+                {
+                    var productItem = db.Carts.Where(e => e.ProductId == Guid.Parse(id)).FirstOrDefault();
+                    //trường hợp chưa có sản phảm trong cart thì thêm sản phẩm vào
+                    if (productItem == null)
+                    {
+                        var cartItem = new Cart()
+                        {
+                            CustomerId = null,
+                            DateCreated = DateTime.Now,
+                            ProductId = Guid.Parse(id),
+                            Quantity = quantity
+                        };
+                        db.Carts.Add(cartItem);
+                        db.SaveChanges();
+                    }
+                    else // ngược lại thì tăng số lượng
+                    {
+                        productItem.Quantity += quantity;
+                        db.SaveChanges();
+                    }
+                    return Json(new ApiResponse { Message = "Đã thêm sản phẩm vào giỏ hàng!", Data = null, Type = true });
+                }
+                else
+                {
+                    return Json(new ApiResponse { Message = "Vui lòng thực hiện lại thao tác", Data = null, Type = false });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new ApiResponse { Message = ex.Message, Data = null, Type = false });
+            }
         }
     }
 }

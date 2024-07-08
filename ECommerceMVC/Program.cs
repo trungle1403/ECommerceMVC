@@ -15,6 +15,7 @@ builder.Services.AddDbContext<EcommerceMvcContext>(option =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 //builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>)); 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
@@ -38,5 +39,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Products}/{action=Index}/{id?}");
-
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.Run();

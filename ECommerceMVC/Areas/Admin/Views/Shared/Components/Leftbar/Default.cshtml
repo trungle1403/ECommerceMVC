@@ -1,0 +1,8 @@
+﻿@model IEnumerable<ECommerceMVC.Areas.Admin.ViewModels.LeftbarVM>
+
+<ul class="sidebar-menu">
+    @foreach (var item in Model)
+    {
+        <li><a class="nav-link" href="@item.Url"><i class="@item.Icon"></i> <span>@item.MenuName</span></a></li>
+    }
+</ul>
