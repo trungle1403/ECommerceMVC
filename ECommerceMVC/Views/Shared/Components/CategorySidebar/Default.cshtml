@@ -8,8 +8,8 @@
     @foreach (var item in Model)
     {
         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-            <input type="checkbox" class="custom-control-input" id="price-@item.CategoryName">
-            <label class="custom-control-label" for="price-@item.CategoryName">@item?.CategoryName</label>
+            <input type="checkbox" class="custom-control-input  category-filter" id="category-@item.CategoryName" value="@item.CategoryID">
+            <label class="custom-control-label" for="category-@item.CategoryName">@item?.CategoryName</label>
             <span class="badge border font-weight-normal">@item.CategoryCount</span>
         </div>
     }
@@ -19,23 +19,23 @@
 <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Lọc theo giá</span></h5>
 <div class="bg-light p-4 mb-30">
     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-        <input type="checkbox" class="custom-control-input" id="color-1">
-        <label class="custom-control-label" for="color-1">0đ - 4.999.999đ</label>
+        <input type="radio" class="custom-control-input price-filter" id="color-1" name="price-filter" value="duoi-5">
+        <label class="custom-control-label" for="color-1">Dưới 5.000.000đ</label>
     </div>
     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-        <input type="checkbox" class="custom-control-input" id="color-2">
-        <label class="custom-control-label" for="color-2">5.000.000đ - 9.999.999đ</label>
+        <input type="radio" class="custom-control-input price-filter" id="color-2" name="price-filter" value="5-10">
+        <label class="custom-control-label" for="color-2">5.000.000đ - 10.000.000đ</label>
     </div>
     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-        <input type="checkbox" class="custom-control-input" id="color-3">
-        <label class="custom-control-label" for="color-3">10.000.000đ - 14.999.999đ</label>
+        <input type="radio" class="custom-control-input price-filter" id="color-3" name="price-filter" value="10-15">
+        <label class="custom-control-label" for="color-3">10.000.000đ - 15.000.000đ</label>
     </div>
     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-        <input type="checkbox" class="custom-control-input" id="color-4">
-        <label class="custom-control-label" for="color-4">15.000.000đ - 19.999.999đ</label>
+        <input type="radio" class="custom-control-input price-filter" id="color-4" name="price-filter" value="15-20">
+        <label class="custom-control-label" for="color-4">15.000.000đ - 20.000.000đ</label>
     </div>
     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-        <input type="checkbox" class="custom-control-input" id="color-5">
+        <input type="radio" class="custom-control-input price-filter" id="color-5" name="price-filter" value="tren-20">
         <label class="custom-control-label" for="color-5">Trên 20.000.000đ</label>
     </div>
 </div>

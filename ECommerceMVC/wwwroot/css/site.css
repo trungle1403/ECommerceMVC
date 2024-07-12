@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.iziToast.iziToast-color-green {
+    background: #8DECB4 !important;
+}
+.iziToast.iziToast-color-red {
+    background: #FA7070 !important;
+}
+.iziToast.iziToast-color-orange {
+    background: #FFC470 !important;
+}

@@ -93,3 +93,49 @@ var TabulatorLangsVi = {
         },
     }
 }
+
+var Alert = {
+    success: function (message) {
+        iziToast.success({
+            message: message,
+            position: 'topRight'
+        });
+    },
+    warning: function (message) {
+        iziToast.warning({
+            message: message,
+            position: 'topRight'
+        });
+    }, 
+    error: function (message) {
+        iziToast.error({
+            message: message,
+            position: 'topRight'
+        });
+    }
+}
+
+/////////////////////// - Pagination ///////////////////////////////
+
+function Pagination(pageIndex, listCount) {
+    const pageSize = 5;
+    var containerPage = ``;
+    pageIndex = pageIndex == 0 ? 1 : pageIndex;
+    var totalPage = Math.ceil(listCount / pageSize);
+
+    containerPage += `<li class="page-item ${pageIndex == 1 ? 'disabled' : ""} " data="${(pageIndex - 1)}" onClick="changePage(this)"><a class="page-link page-link-item"  >Previous</a></li>`; 
+    for (var i = 1; i <= totalPage; i++) {
+        containerPage += `<li class="page-item ${pageIndex == i ? "active" : ""}"  data="${i}" onClick="changePage(this)"><a class="page-link page-link-item" >${i}</a></li>`
+    }
+    containerPage += `<li class="page-item ${pageIndex == totalPage ? 'disabled' : ""}"  data="${pageIndex+1}" onClick="changePage(this)"><a class="page-link page-link-item" >Next</a></li>`;
+    return containerPage;
+}
+
+function changePage(e) {
+    $('.page-item').each(function (index, element) {
+        $(element).removeClass("active");
+    });
+    $(e).addClass('active')
+}
+/////////////////////// - Pagination - End ///////////////////////////////
+

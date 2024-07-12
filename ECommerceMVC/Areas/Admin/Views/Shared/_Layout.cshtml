@@ -7,6 +7,7 @@
     <link href="~/admin/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/admin/lib/fontawesome/css/all.css" rel="stylesheet" />
     <link href="~/admin/lib/fontawesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/toast/izitoast.min.css" rel="stylesheet" />
     <link href="~/admin/css/style.css" rel="stylesheet" />
     <link href="~/admin/css/components.css" rel="stylesheet" />
     <link href="~/lib/tabulator/dist/css/tabulator.min.css" rel="stylesheet" />
@@ -100,15 +101,16 @@
 
     <script src="~/admin/js/jquery.min.js"></script>
     <script src="~/admin/js/popper.js"></script>
+    <script src="~/lib/toast/izitoast.min.js"></script>
     <script src="~/admin/js/tooltip.js"></script>
     <script src="~/admin/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin/js/jquery.nicescroll.min.js"></script>
     <script src="~/admin/js/moment.min.js"></script>
     <script src="~/admin/js/chart.min.js"></script>
     <script src="~/admin/js/stisla.js"></script>
-    <script src="~/admin/js/scripts.js"></script>
-    <script src="~/admin/js/custom.js"></script>
-    <script src="~/js/common.js"></script>
+    <script src="~/admin/js/scripts.js?v=@DateTime.Now.Ticks.ToString()"></script>
+    <script src="~/admin/js/custom.js?v=@DateTime.Now.Ticks.ToString()"></script>
+    <script src="~/js/common.js?v=@DateTime.Now.Ticks.ToString()"></script>
     <script src="~/lib/tabulator/dist/js/tabulator.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false);
 </body>

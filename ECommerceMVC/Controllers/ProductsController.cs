@@ -1,4 +1,5 @@
-﻿using ECommerceMVC.Data;
+﻿using ECommerceMVC.Common;
+using ECommerceMVC.Data;
 using ECommerceMVC.Models;
 using ECommerceMVC.Repositories;
 using ECommerceMVC.Services;
@@ -35,9 +36,34 @@ namespace ECommerceMVC.Controllers
         //    }
         //    return View(await PaginatedList<ProductsModel>.CreatePagination(data, pageIndex));
         //}
-        public async Task<IActionResult> Index(int pageIndex = 1)
+        public async Task<IActionResult> Index(string category = "", string price = "", int pageIndex = 1)
         {
             var data = _productRepository.GetAll();
+            if (data.Count() != 0)
+            {
+                if(category != "")
+                {
+                    data = data.Where(e => category.Contains(e.CategoryId.ToString()));
+                }
+                switch (price)
+                {
+                    case "duoi-5":
+                        data = data.Where(e => e.Price < 5000000);
+                        break;
+                    case "5-10":
+                        data = data.Where(e => e.Price >= 5000000 && e.Price <= 10000000);
+                        break;
+                    case "10-15":
+                        data = data.Where(e => e.Price >= 10000000 && e.Price <= 15000000);
+                        break;
+                    case "15-20":
+                        data = data.Where(e => e.Price >= 15000000 && e.Price <= 20000000);
+                        break;
+                    case "tren-20":
+                        data = data.Where(e => e.Price >= 20000000);
+                        break;
+                }
+            }
             if (pageIndex < 1)
             {
                 pageIndex = 1;
@@ -45,12 +71,45 @@ namespace ECommerceMVC.Controllers
            return View(await PaginatedList<Product>.CreatePagination(data, pageIndex));
         }
 
-
+        
         [HttpGet]
-        public JsonResult GetAllProducts()
+        public JsonResult GetAllProducts(string category = "", string price = "", int pageIndex = 1)
         {
+            //var data = _productRepository.GetAll();
             var data = _productRepository.GetAll();
-            return Json(data);
+            if (data.Count() != 0)
+            {
+                if (category != "")
+                {
+                    data = data.Where(e => category.Contains(e.CategoryId.ToString()));
+                }
+                switch (price)
+                {
+                    case "duoi-5":
+                        data = data.Where(e => e.Price < 5000000);
+                        break;
+                    case "5-10":
+                        data = data.Where(e => e.Price >= 5000000 && e.Price <= 10000000);
+                        break;
+                    case "10-15":
+                        data = data.Where(e => e.Price >= 10000000 && e.Price <= 15000000);
+                        break;
+                    case "15-20":
+                        data = data.Where(e => e.Price >= 15000000 && e.Price <= 20000000);
+                        break;
+                    case "tren-20":
+                        data = data.Where(e => e.Price >= 20000000);
+                        break;
+                }
+            }
+            if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+            int pageSize = 5;
+            int totalCount = data.Count();
+            data = data.Skip(pageSize*(pageIndex-1)).Take(pageSize);
+            return Json( new ApiResponse { Message = totalCount.ToString(), Data = data, Type = true});
         }
 
         public JsonResult AddToCart(string id, int quantity = 1)

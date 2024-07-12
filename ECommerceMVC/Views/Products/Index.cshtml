@@ -3,13 +3,17 @@
     ViewData["Title"] = "Products";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    #product-list {
+        min-height: 500px;
+    }
+</style>
 <!-- Shop Start -->
 <div class="container-fluid">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-4">
-            @await Component.InvokeAsync("CategorySidebar");
+            @await Component.InvokeAsync("CategorySidebar")
         </div>
         <!-- Shop Sidebar End -->
         <!-- Shop Product Start -->
@@ -41,40 +45,43 @@
                     </div>
                 </div>
                 <div>
-                    <h5>Có @Model.List.Count() sản phẩm</h5>
+                    <h5>Có <span id="product-count">@Model.List.Count() </span>  sản phẩm</h5>
                 </div>
-                @foreach (var item in Model.List)
-                {
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="product-item bg-light mb-4">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="@item.Images" alt="">
-                                <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square btnAddToCart" data-id="@item.ProductId" href="#"><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                <div class="row" id="product-list">
+                    @foreach (var item in Model.List)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="@item.Images" alt="">
+                                    <div class="product-action">
+                                        <a class="btn btn-outline-dark btn-square btnAddToCart" data-id="@item.ProductId" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href="">@item.ProductName</a>
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <h5>@item.Price.ToString("N0")</h5><h6 class="text-muted ml-2"><del>@item.Price.ToString("N0")</del></h6>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small>(99)</small>
+                                <div class="text-center py-4">
+                                    <a class="h6 text-decoration-none text-truncate" href="">@item.ProductName</a>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>@item.Price.ToString("N0")</h5><h6 class="text-muted ml-2"><del>@item.Price.ToString("N0")</del></h6>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small>(99)</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+                
                 
                 <div class="col-12">
                     <nav>
-                        <ul class="pagination justify-content-center">
+                        <ul class="pagination justify-content-center" id="page-list">
                             <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "") "><a class="page-link" asp-controller="Products" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex-1)">Previous</a></li>
                             @for (int i = 1; i <= Model.TotalPages; i++)
                             {
@@ -94,15 +101,75 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var result = getAjax("/Products/GetAllProducts");
+            //var result = getAjax("/Products/GetAllProducts");
 
             $('.btnAddToCart').on('click', function () {
                 var id = $(this).attr('data-id');
                 var result = getAjax("Products/AddToCart", { id: id, quantity: 1})
                 if (result.type) {
-                    console.log(result.message)
+                    Alert.success(result.message)
+                } else {
+                    Alert.error(result.message)
                 }
             })
+
+            $('.category-filter,.price-filter').on('click', function () {
+                GetAllData(1);
+            })
+
+            $('#page-list').on('click', '.page-item', function () {
+                var page = $(this).attr('data');
+                GetAllData(page);
+            })
+            function GetAllData(pageIndex) {
+                pageIndex == 0 ? 1 : pageIndex;
+                var checkboxes = $('.category-filter:checked');
+                var categoryQuery = "";
+                checkboxes.map(function () {
+                    categoryQuery += this.value + ",";
+                })
+
+                var priceQuery = "";
+                var priceChecked = $('.price-filter:checked');
+                priceChecked.map(function () {
+                    priceQuery += this.value;
+                })
+                var containerProduct = '';
+                var result = getAjax("Products/GetAllProducts", { category: categoryQuery, price: priceQuery, pageIndex: pageIndex })
+                if (result.type) {
+                    $('#product-count').html(result.data.length)
+                    for (var i = 0; i < result.data.length; i++) {
+                        var data = result.data[i];
+                        containerProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
+                                                    <div class="product-item bg-light mb-4">
+                                                        <div class="product-img position-relative overflow-hidden">
+                                                            <img class="img-fluid w-100" src="${data.images}" alt="">
+                                                            <div class="product-action">
+                                                                <a class="btn btn-outline-dark btn-square btnAddToCart" data-id="${data.productId}" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i></a>
+                                                                <a class="btn btn-outline-dark btn-square" href="javascript:void(0)"><i class="far fa-heart"></i></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-center py-4">
+                                                            <a class="h6 text-decoration-none text-truncate" href="">${data.productName}</a>
+                                                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                                            <h5>${data.price}</h5><h6 class="text-muted ml-2"><del>${data.price}</del></h6>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-center mb-1">
+                                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                                <small>(99)</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`
+                    }
+                    $('#product-list').html(containerProduct);
+                    $('#page-list').html(Pagination( pageIndex, result.message))
+                }
+            }
         })    
     </script>
 }
