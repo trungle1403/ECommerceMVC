@@ -123,11 +123,11 @@ function Pagination(pageIndex, listCount) {
     pageIndex = pageIndex == 0 ? 1 : pageIndex;
     var totalPage = Math.ceil(listCount / pageSize);
 
-    containerPage += `<li class="page-item ${pageIndex == 1 ? 'disabled' : ""} " data="${(pageIndex - 1)}" onClick="changePage(this)"><a class="page-link page-link-item"  >Previous</a></li>`; 
+    containerPage += `<li class="page-item ${pageIndex == 1 ? 'disabled' : ""} " data="${(parseInt(pageIndex) - 1)}" onClick="changePage(this)"><a class="page-link page-link-item"  >Previous</a></li>`; 
     for (var i = 1; i <= totalPage; i++) {
         containerPage += `<li class="page-item ${pageIndex == i ? "active" : ""}"  data="${i}" onClick="changePage(this)"><a class="page-link page-link-item" >${i}</a></li>`
     }
-    containerPage += `<li class="page-item ${pageIndex == totalPage ? 'disabled' : ""}"  data="${pageIndex+1}" onClick="changePage(this)"><a class="page-link page-link-item" >Next</a></li>`;
+    containerPage += `<li class="page-item ${pageIndex == totalPage ? 'disabled' : ""}"  data="${parseInt(pageIndex)+1}" onClick="changePage(this)"><a class="page-link page-link-item" >Next</a></li>`;
     return containerPage;
 }
 

@@ -6,6 +6,7 @@
 <style>
     #product-list {
         min-height: 500px;
+        min-width: 100%;
     }
 </style>
 <!-- Shop Start -->
@@ -60,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center py-4">
-                                    <a class="h6 text-decoration-none text-truncate" href="">@item.ProductName</a>
+                                    <a class="h6 text-decoration-none text-truncate" asp-controller="Products" asp-action="Detail" asp-route-id="@item.ProductId">@item.ProductName</a>
                                     <div class="d-flex align-items-center justify-content-center mt-2">
                                         <h5>@item.Price.ToString("N0")</h5><h6 class="text-muted ml-2"><del>@item.Price.ToString("N0")</del></h6>
                                     </div>
@@ -105,7 +106,7 @@
 
             $('.btnAddToCart').on('click', function () {
                 var id = $(this).attr('data-id');
-                var result = getAjax("Products/AddToCart", { id: id, quantity: 1})
+                var result = getAjax("/Products/AddToCart", { id: id, quantity: 1})
                 if (result.type) {
                     Alert.success(result.message)
                 } else {
@@ -114,11 +115,13 @@
             })
 
             $('.category-filter,.price-filter').on('click', function () {
+                history.pushState(null, '', `${window.location.pathname}?pageIndex=1`);
                 GetAllData(1);
             })
 
             $('#page-list').on('click', '.page-item', function () {
                 var page = $(this).attr('data');
+                history.pushState(null, '', `${window.location.pathname}?pageIndex=${page}`);
                 GetAllData(page);
             })
             function GetAllData(pageIndex) {
@@ -135,11 +138,12 @@
                     priceQuery += this.value;
                 })
                 var containerProduct = '';
-                var result = getAjax("Products/GetAllProducts", { category: categoryQuery, price: priceQuery, pageIndex: pageIndex })
+                var result = getAjax("/Products/GetAllProducts", { category: categoryQuery, price: priceQuery, pageIndex: pageIndex })
                 if (result.type) {
                     $('#product-count').html(result.data.length)
                     for (var i = 0; i < result.data.length; i++) {
                         var data = result.data[i];
+                        var priceFormater = data.price.toLocaleString('en-US');
                         containerProduct += `<div class="col-lg-3 col-md-4 col-sm-6">
                                                     <div class="product-item bg-light mb-4">
                                                         <div class="product-img position-relative overflow-hidden">
@@ -152,7 +156,7 @@
                                                         <div class="text-center py-4">
                                                             <a class="h6 text-decoration-none text-truncate" href="">${data.productName}</a>
                                                             <div class="d-flex align-items-center justify-content-center mt-2">
-                                                            <h5>${data.price}</h5><h6 class="text-muted ml-2"><del>${data.price}</del></h6>
+                                                            <h5>${priceFormater}</h5><h6 class="text-muted ml-2"><del>${priceFormater}</del></h6>
                                                             </div>
                                                             <div class="d-flex align-items-center justify-content-center mb-1">
                                                                 <small class="fa fa-star text-primary mr-1"></small>

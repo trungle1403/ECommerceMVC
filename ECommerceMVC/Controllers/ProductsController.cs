@@ -149,5 +149,22 @@ namespace ECommerceMVC.Controllers
                 return Json(new ApiResponse { Message = ex.Message, Data = null, Type = false });
             }
         }
+
+        public ActionResult Detail(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var product = _productRepository.GetByID(id);
+                if (product == null)
+                {
+                    return RedirectToAction("Index");
+                }
+                return View(product);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

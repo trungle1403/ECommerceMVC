@@ -2,7 +2,7 @@
 
 namespace ECommerceMVC.Models
 {
-    public class CarModel
+    public class CartModel
     {
         public Guid CartId { get; set; }
 

@@ -32,7 +32,7 @@ namespace ECommerceMVC.Services
 
         public T GetByID(string id)
         {
-            return _context.Set<T>().Find(id);
+            return _context.Set<T>().Find(Guid.Parse(id));
         }
 
         public void Update(T entity)
